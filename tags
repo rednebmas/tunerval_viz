@@ -1,0 +1,57 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+_flatten_with_sep	to_csv.py	/^def _flatten_with_sep(data, sep, output, prefix_key=""):$/;"	kind:function	line:16
+add_blank_days_to_bucketed_by_day	analyze_utils.py	/^def add_blank_days_to_bucketed_by_day(bucketed_by_day):$/;"	kind:function	line:40
+add_question_order_column	data_formatter.py	/^def add_question_order_column(data):$/;"	kind:function	line:1
+add_question_order_column	to_csv.py	/^from data_formatter import format_event, add_question_order_column$/;"	kind:namespace	line:5
+analyze_utils.py	analyze_utils.py	1;"	kind:file	line:1
+aws_madp	analyze_utils.py	/^import aws_mobile_analytics_data_parser as aws_madp$/;"	kind:namespace	line:2
+aws_madp	cache-data.py	/^import aws_mobile_analytics_data_parser as aws_madp$/;"	kind:namespace	line:1
+aws_mobile_analytics_data_parser.py	aws_mobile_analytics_data_parser.py	1;"	kind:file	line:1
+bucket_by_day	analyze_utils.py	/^def bucket_by_day(data):$/;"	kind:function	line:49
+bucket_by_path	analyze_utils.py	/^def bucket_by_path(path_list, data):$/;"	kind:function	line:70
+bucket_events	analyze_utils.py	/^def bucket_events(data):$/;"	kind:function	line:19
+cache-data.py	cache-data.py	1;"	kind:file	line:1
+comma_separated_values	to_csv.py	/^			comma_separated_values = ','.join([str(event[key]) if key in event else "NULL" for key in keys])$/;"	kind:variable	line:44
+data	cache-data.py	/^data = aws_madp.parse_data_in_directory(directory)$/;"	kind:variable	line:16
+data	to_csv.py	/^data = load_data_from_cache()$/;"	kind:variable	line:7
+data_formatter.py	data_formatter.py	1;"	kind:file	line:1
+date	analyze_utils.py	/^from datetime import date$/;"	kind:namespace	line:4
+date	to_csv.py	/^from datetime import date$/;"	kind:namespace	line:3
+date_for_event	analyze_utils.py	/^def date_for_event(event):$/;"	kind:function	line:83
+datetime	analyze_utils.py	/^import datetime$/;"	kind:namespace	line:3
+datetime	to_csv.py	/^import datetime$/;"	kind:namespace	line:2
+directory	cache-data.py	/^directory = "\/Users\/sam\/s3\/mobile-analytics-05-18-2016-b999adf56f104192a4ed120107b55dc9"$/;"	kind:variable	line:9
+event	to_csv.py	/^		event = events[event_type][i]$/;"	kind:variable	line:29
+events	to_csv.py	/^events = bucket_events(data)$/;"	kind:variable	line:11
+flatten_with_sep	to_csv.py	/^def flatten_with_sep(data, sep=">"):$/;"	kind:function	line:13
+fnmatch	aws_mobile_analytics_data_parser.py	/^import fnmatch$/;"	kind:namespace	line:2
+format_event	data_formatter.py	/^def format_event(event):$/;"	kind:function	line:34
+format_event	to_csv.py	/^from data_formatter import format_event, add_question_order_column$/;"	kind:namespace	line:5
+formatted_date_str_for_event_time_stamp	analyze_utils.py	/^def formatted_date_str_for_event_time_stamp(event_timestamp):$/;"	kind:function	line:29
+gzip	aws_mobile_analytics_data_parser.py	/^import gzip$/;"	kind:namespace	line:3
+jpretty	analyze_utils.py	/^def jpretty(d):$/;"	kind:function	line:11
+jprint	aws_mobile_analytics_data_parser.py	/^def jprint(d):$/;"	kind:function	line:23
+json	analyze_utils.py	/^import json$/;"	kind:namespace	line:1
+json	aws_mobile_analytics_data_parser.py	/^import json$/;"	kind:namespace	line:4
+json	cache-data.py	/^import json$/;"	kind:namespace	line:4
+json	to_csv.py	/^import json$/;"	kind:namespace	line:1
+key_set	to_csv.py	/^	key_set = set()$/;"	kind:variable	line:35
+keys	to_csv.py	/^	keys = sorted(list(key_set))$/;"	kind:variable	line:40
+load_data_from_cache	analyze_utils.py	/^def load_data_from_cache():$/;"	kind:function	line:14
+os	aws_mobile_analytics_data_parser.py	/^import os$/;"	kind:namespace	line:1
+os	cache-data.py	/^import os$/;"	kind:namespace	line:5
+parse_data_in_directory	aws_mobile_analytics_data_parser.py	/^def parse_data_in_directory(directory):$/;"	kind:function	line:7
+pp	analyze_utils.py	/^pp = pprint.PrettyPrinter(indent=4)$/;"	kind:variable	line:6
+pprint	analyze_utils.py	/^import pprint$/;"	kind:namespace	line:5
+pretty	analyze_utils.py	/^def pretty(var):$/;"	kind:function	line:8
+re	aws_mobile_analytics_data_parser.py	/^import re$/;"	kind:namespace	line:5
+sorted_by_day	analyze_utils.py	/^def sorted_by_day(bucketed_by_day):$/;"	kind:function	line:60
+subprocess	cache-data.py	/^import subprocess$/;"	kind:namespace	line:6
+sys	cache-data.py	/^import sys$/;"	kind:namespace	line:3
+threading	cache-data.py	/^import threading$/;"	kind:namespace	line:2
+to_csv.py	to_csv.py	1;"	kind:file	line:1
