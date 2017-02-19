@@ -1,3 +1,30 @@
 body {
-	/*color: white;*/
+	padding: 20px 20px;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+svg {
+	font: 10px sans-serif;
+	height: 100%;
+	width: 100%;
+}
+
+html, body, body>.row, .row>.col {
+	height: 100%;
+}
+
+.ui-controls>.row {
+	padding: 5px 5px;
+}
+
+#loading-gif {
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+	width: 128px;
+    height: 128px;
+}
+
+#questions-answered-slider-range {
+	margin: 9px 0px;
 }

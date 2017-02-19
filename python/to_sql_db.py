@@ -13,7 +13,6 @@ cols = ','.join(list(
 	map(lambda c: "[" + c + "] " + pandas_dtype_to_sql[str(df[c].dtype)], df.columns)  
 ))
 
-
 # create a table with the
 stmt = "CREATE TABLE QuestionAnswers ( " + cols + ")"
 print(stmt)

@@ -1,186 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Template Page</title>
-
-	<!-- Styles -->
-	<link href="style.css" rel="stylesheet">
+	<title>Tunerval Viz</title>
 
 	<!-- jQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-	<!-- Our script -->
-	<script src="main.js"></script>
+	<!-- d3 -->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<!-- JQueryUI -->
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+
+	<!-- Styles -->
+	<link href="style.css" rel="stylesheet">
 </head>
 <body>
+	<div class="row">
+		<div class="col-md-8 col">
+			<svg></svg>
+		</div>
 
+		<div class="col-md-4 col ui-controls">
 
+			<!-- Questions answered slider -->
+			<div class="row">
+				<div class="col-md-12 col">
+					<label for="amount">Questions answered:</label>
+					<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+					<div id="questions-answered-slider-range"></div>
+				</div>
+			</div>
 
-	<style>
+			<!-- Date range  -->
+			<div class="row">
+				<div class="col-md-12 col">
+					<div class="input-daterange input-group" id="datepicker">
+						<input type="text" class="input-sm form-control" name="start" />
+						<span class="input-group-addon">to</span>
+						<input type="text" class="input-sm form-control" name="end" />
+					</div>
+				</div>
+			</div>
 
-		form {
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-		}
+			<!-- Breakdown by interval -->
+			<div class="row">
+				<div class="col-md-12 col">
+					<div class="checkbox">
+						<label><input type="checkbox" value="">Breakdown users by interval</label>
+					</div>
+				</div>
+			</div>
 
-		svg {
-			font: 10px sans-serif;
-		}
+			<!-- /close ui-controls -->
+		</div>
+	</div>
+ 	
+	<img id="loading-gif" src="loading.gif">
 
-	</style>
-	<svg width="960" height="570"></svg>
-	<form>
-		<label><input type="radio" name="mode" value="sumBySize" checked> Size</label>
-		<label><input type="radio" name="mode" value="sumByCount"> Count</label>
-	</form>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script>
-
-		var svg = d3.select("svg"),
-		width = +svg.attr("width"),
-		height = +svg.attr("height");
-
-		var fader = function(color) { return d3.interpolateRgb(color, "#fff")(0.2); },
-		color = d3.scaleOrdinal(d3.schemeCategory20.map(fader)),
-		format = d3.format(",d");
-
-		var treemap = d3.treemap()
-		.tile(d3.treemapResquarify)
-		.size([width, height])
-		.round(true)
-		.paddingInner(1);
-
-		svg
-.on( "mousedown", function() {
-    var p = d3.mouse( this);
-
-    svg.append( "rect")
-    .attr({
-        rx      : 6,
-        ry      : 6,
-        class   : "selection",
-        x       : p[0],
-        y       : p[1],
-        width   : 0,
-        height  : 0
-    })
-})
-.on( "mousemove", function() {
-    var s = svg.select( "rect.selection");
-
-    if( !s.empty()) {
-        var p = d3.mouse( this),
-
-            d = {
-                x       : parseInt( s.attr( "x"), 10),
-                y       : parseInt( s.attr( "y"), 10),
-                width   : parseInt( s.attr( "width"), 10),
-                height  : parseInt( s.attr( "height"), 10)
-            },
-            move = {
-                x : p[0] - d.x,
-                y : p[1] - d.y
-            }
-        ;
-
-        if( move.x < 1 || (move.x*2<d.width)) {
-            d.x = p[0];
-            d.width -= move.x;
-        } else {
-            d.width = move.x;       
-        }
-
-        if( move.y < 1 || (move.y*2<d.height)) {
-            d.y = p[1];
-            d.height -= move.y;
-        } else {
-            d.height = move.y;       
-        }
-       
-        s.attr( d);
-        //console.log( d);
-    }
-})
-.on( "mouseup", function() {
-    svg.select( ".selection").remove();
-});
-
-		$.get('http://0.0.0.0:8888/treemap', function (data) {
-			var root = d3.hierarchy(data)
-			.eachBefore(function(d) { d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name; })
-			.sum(sumBySize)
-			.sort(function(a, b) { return b.height - a.height || b.value - a.value; });
-
-			treemap(root);
-
-			var cell = svg.selectAll("g")
-			.data(root.leaves())
-			.enter().append("g")
-			.attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; });
-
-			cell.append("rect")
-			.attr("id", function(d) { return d.data.id; })
-			.attr("width", function(d) { return d.x1 - d.x0; })
-			.attr("height", function(d) { return d.y1 - d.y0; })
-			.attr("fill", function(d) { return color(d.parent.data.id); });
-
-			cell.append("clipPath")
-			.attr("id", function(d) { return "clip-" + d.data.id; })
-			.append("use")
-			.attr("xlink:href", function(d) { return "#" + d.data.id; });
-
-			cell.append("text")
-			.attr("clip-path", function(d) { return "url(#clip-" + d.data.id + ")"; })
-			.attr("fill", "white")
-			.selectAll("tspan")
-			.data(function(d) { return d.data.name.split(/(?=[A-Z][^A-Z])/g); })
-			.enter().append("tspan")
-			.attr("x", 4)
-			.attr("y", function(d, i) { return 13 + i * 10; })
-			.text(function(d) { return d; });
-
-			cell.append("title")
-			.text(function(d) { return d.data.id + "\n" + format(d.value); });
-
-			d3.selectAll("input")
-			.data([sumBySize, sumByCount], function(d) { return d ? d.name : this.value; })
-			.on("change", changed);
-
-			// var timeout = d3.timeout(function() {
-			// 	d3.select("input[value=\"sumByCount\"]")
-			// 	.property("checked", true)
-			// 	.dispatch("change");
-			// }, 2000);
-
-			function changed(sum) {
-				timeout.stop();
-
-				treemap(root.sum(sum));
-
-				cell.transition()
-				.duration(750)
-				.attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; })
-				.select("rect")
-				.attr("width", function(d) { return d.x1 - d.x0; })
-				.attr("height", function(d) { return d.y1 - d.y0; });
-			}
-		})
-		.fail(function() {
-			alert( "failure requesting data" );
-		});
-
-		function sumByCount(d) {
-			return d.children ? 0 : 1;
-		}
-
-		function sumBySize(d) {
-			return d.size;
-		}
-
-	</script>
-
-
-
-
-
+	<script src="main.js"></script>
+	<script src="ui_controls.js"></script>
 </body>
 </html>
