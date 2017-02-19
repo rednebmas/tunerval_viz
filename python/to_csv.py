@@ -4,6 +4,9 @@ from datetime import date
 from analyze_utils import *
 from data_formatter import format_event, add_question_order_column
 
+# https://github.com/pandas-dev/pandas/blob/master/doc/cheatsheet/Pandas_Cheat_Sheet.pdf
+# http://stackoverflow.com/questions/19482970/get-list-from-pandas-dataframe-column-headers
+
 data = load_data_from_cache()
 add_question_order_column(data)
 print data[0]
