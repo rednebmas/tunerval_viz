@@ -31,3 +31,5 @@ The server is run on python3 and the rest of the python scripts written for pyth
 [Bootstrap date-picker](https://github.com/uxsolutions/bootstrap-datepicker)
 
 [jQueryUI](https://jqueryui.com/)
+
+[moment.js](https://momentjs.com/)

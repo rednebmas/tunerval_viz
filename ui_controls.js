@@ -26,7 +26,29 @@ $( "#amount" ).val("$" + $("#questions-answered-slider-range")
 // Date picker
 //
 
+// set initial value for end date
+$('#daterange-end').val(filters.dateEnd);
+
+// then initialize the datepicker
 $('.input-daterange').datepicker({
-	todayBtn: "linked",
-	todayHighlight: true
+	todayBtn: 'linked',
+	autoclose: true,
+	todayHighlight: true,
+	format: 'm/d/yyyy',
+	startDate: '4/26/2016',
+	endDate: '+0d',
+	// setDate: '2/16/2017'
+});
+
+// on change ask server for new data
+$('#daterange-start').change(function (event) {
+	filters.dateStart = $(this).val();
+	console.log('hey this start: ' + $(this).val());
+	console.log(filters);
+	filtersChanged();
+});
+$('#daterange-end').change(function (event) {
+	filters.dateEnd = $(this).val();
+	console.log(filters);
+	filtersChanged();
 });

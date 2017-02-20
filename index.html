@@ -6,6 +6,9 @@
 	<!-- jQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
+	<!-- jQuery -->
+	<script src="lib/moment.min.js"></script>
+
 	<!-- d3 -->
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 
@@ -39,7 +42,7 @@
 			<!-- Questions answered slider -->
 			<div class="row">
 				<div class="col-md-12 col">
-					<label for="amount">Questions answered:</label>
+					<label for="amount">Total questions answered:</label>
 					<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
 					<div id="questions-answered-slider-range"></div>
 				</div>
@@ -48,10 +51,11 @@
 			<!-- Date range  -->
 			<div class="row">
 				<div class="col-md-12 col">
-					<div class="input-daterange input-group" id="datepicker">
-						<input type="text" class="input-sm form-control" name="start" />
-						<span class="input-group-addon">to</span>
-						<input type="text" class="input-sm form-control" name="end" />
+					<label>Date range</label>
+					<div class="input-group input-daterange">
+						<input id="daterange-start" type="text" class="form-control" value="4/26/2016">
+						<div class="input-group-addon">to</div>
+						<input id="daterange-end" type="text" class="form-control" >
 					</div>
 				</div>
 			</div>
@@ -59,9 +63,10 @@
 			<!-- Breakdown by interval -->
 			<div class="row">
 				<div class="col-md-12 col">
-					<div class="checkbox">
-						<label><input type="checkbox" value="">Breakdown users by interval</label>
-					</div>
+					<!-- <label>Breakdown users by interval</label> -->
+					<!-- <div class="checkbox"> -->
+						<label><input type="checkbox" value=""> Breakdown users by interval</label>
+					<!-- </div> -->
 				</div>
 			</div>
 

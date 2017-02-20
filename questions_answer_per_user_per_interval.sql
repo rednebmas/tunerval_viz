@@ -31,4 +31,5 @@ SELECT [client>client_id],
     SUM(case when [metrics>interval] = 12 then 1 else 0 end) as asc_octave
 
 FROM QuestionAnswers 
+WHERE [event_timestamp] > ? AND [event_timestamp] < ?
 GROUP BY [client>client_id];

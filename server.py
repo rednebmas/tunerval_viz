@@ -1,4 +1,6 @@
 import sqlite3
+import time
+from datetime import datetime
 from sanic import Sanic
 from sanic.response import json
 
@@ -24,12 +26,17 @@ async def test(request):
 # data for the treemap
 @app.route("/treemap")
 async def test(request):
+	print(request.args)
+	print(request.args.get('dateStart'))
+	date_start = date_to_unix_epoch_milliseconds(request.args.get('dateStart'))
+	date_end = date_to_unix_epoch_milliseconds(request.args.get('dateEnd'))
+
 	# the basis of the response
 	res = { "name" : "data", "children" : [] }
 
 	# load the sql query
 	with open('questions_answer_per_user_per_interval.sql') as f:
-		cursor.execute(f.read())
+		cursor.execute(f.read(), (date_start, date_end))
 
 	# get all results from the query
 	rows = cursor.fetchall()
@@ -51,7 +58,13 @@ async def test(request):
 
 	return json(res)
 
-# PRAGMA table_info(QuestionAnswers);
+def date_to_unix_epoch_milliseconds(date_str):
+	""" @param date_str 
+			expected format ex: 4/26/2016
+	"""
+	d = datetime.strptime(date_str + ' 11:59PM', '%m/%d/%Y %I:%M%p')
+	return time.mktime(d.timetuple()) * 1000
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8888)
