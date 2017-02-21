@@ -13,6 +13,14 @@ html, body, body>.row, .row>.col {
 	height: 100%;
 }
 
+body>.row {
+	margin: 0px;
+}
+
+.col1 {
+	padding: 0px;
+}
+
 .ui-controls>.row {
 	padding: 5px 5px;
 }

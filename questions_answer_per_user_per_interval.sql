@@ -1,5 +1,6 @@
 -- http://stackoverflow.com/questions/20973867/sqlite-multiple-aggregate-columns
 SELECT [client>client_id],
+       [device>platform>name],
     SUM(case when [metrics>interval] <> -22 then 1 else 0 end) as total_questions_answered,
 
     SUM(case when [metrics>interval] = -12 then 1 else 0 end) as desc_octave,

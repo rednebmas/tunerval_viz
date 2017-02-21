@@ -33,8 +33,11 @@
 </head>
 <body>
 	<div class="row">
-		<div class="col-md-8 col">
-			<svg></svg>
+		<div class="col-md-8 col col1">
+			<svg>
+				
+			</svg>
+			<div class="popover fade right in" role="tooltip" id="popover785269" style="position: absolute;"><div class="arrow"></div><h3 class="popover-title" style="display: none;"></h3><div class="popover-content">Some content</div></div>
 		</div>
 
 		<div class="col-md-4 col ui-controls">
@@ -43,7 +46,7 @@
 			<div class="row">
 				<div class="col-md-12 col">
 					<label for="amount">Total questions answered:</label>
-					<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+					<input type="text" id="questions-answered-slider-amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
 					<div id="questions-answered-slider-range"></div>
 				</div>
 			</div>
@@ -63,10 +66,7 @@
 			<!-- Breakdown by interval -->
 			<div class="row">
 				<div class="col-md-12 col">
-					<!-- <label>Breakdown users by interval</label> -->
-					<!-- <div class="checkbox"> -->
-						<label><input type="checkbox" value=""> Breakdown users by interval</label>
-					<!-- </div> -->
+					<label><input id="breakdown-by-interval-checkbox" type="checkbox" checked> Breakdown users by interval</label>
 				</div>
 			</div>
 

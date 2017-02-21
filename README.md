@@ -15,10 +15,11 @@ The server is run on python3 and the rest of the python scripts written for pyth
 
 ## Links
 
-[Treemap in d3 reference]
-(https://bl.ocks.org/mbostock/4063582)
+[Treemap in d3 reference](https://bl.ocks.org/mbostock/4063582)
 
 [Loading gif](https://www.reddit.com/r/loadingicon/comments/4dxdtv/axis_of_oscillation/)
+
+[Nesting in d3](https://bost.ocks.org/mike/nest/)
 
 ## Libraries Used
 
