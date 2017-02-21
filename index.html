@@ -37,7 +37,7 @@
 			<svg>
 				
 			</svg>
-			<div class="popover fade right in" role="tooltip" id="popover785269" style="position: absolute;"><div class="arrow"></div><h3 class="popover-title" style="display: none;"></h3><div class="popover-content">Some content</div></div>
+			<div class="popover fade right in" role="tooltip" id="popover785269" style="position: absolute;"><div class="arrow"></div><h3 class="popover-title" style="/*display: none;*/"></h3><div class="popover-content">Some content</div></div>
 		</div>
 
 		<div class="col-md-4 col ui-controls">
@@ -67,6 +67,26 @@
 			<div class="row">
 				<div class="col-md-12 col">
 					<label><input id="breakdown-by-interval-checkbox" type="checkbox" checked> Breakdown users by interval</label>
+				</div>
+			</div>
+
+			<!-- Color squares by -->
+			<div class="row">
+				<div class="col-md-12 col">
+
+					<label>Color squares by</label>
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							Client ID
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li><a href="#">Client ID</a></li>
+							<li><a href="#">Interval</a></li>
+							<li><a href="#">Platform</a></li>
+						</ul>
+					</div>
+
 				</div>
 			</div>
 

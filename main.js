@@ -29,14 +29,12 @@ var updateViz = function () {
 	var root = d3.hierarchy(data)
 		.eachBefore(function(d) { 
 			d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name; 
-			// console.log(d);
 			if (!('device>platform>name' in d['data']) && d.depth != 0) {
 				// console.log(d);
 				d['data']['device>platform>name'] = d.parent['data']['device>platform>name'];
+				d['data']['client_id'] = d.parent['data']['name'];
 			} else {
-				// console.log(d);
 			}
-			// d.data['device>platform>name'] = 
 		})
 		.sum(sumBySize)
 		.sort(function(a, b) { return b.height - a.height || b.value - a.value; });
@@ -55,17 +53,26 @@ var updateViz = function () {
 		.attr("width", function(d) { return d.x1 - d.x0; })
 		.attr("height", function(d) { return d.y1 - d.y0; })
 		.attr("fill", function(d) { return filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id); })
+		.attr("fill-opacity", .9)
+		.on('click', function (d) {
+			d3.select(this).attr('fill', 'black');
+		})
 		.on('mouseover', function (d) {
 			// var rectTopLeftOffsetX = 20;
 			// var rectTopLeftOffsetY = 20;
+			d3.select(this).attr('fill-opacity', 1.0);
 
 			// console.log(d)
 
+			// $('#popover785269').fadeIn();
 			$('#popover785269').css("display", "block");
 			$('#popover785269 .popover-content').html(d.value + " questions"
 				+ "<br>" + d.data.name
 				+ "<br>" + d.data['device>platform>name']
+				// + "<br>" + d.data['client_id']
 			);
+			$('#popover785269 .popover-title').text(d.data['client_id']);
+
 			// $('#popover785269 .popover-content').html(d.value + " questions<br/>\n" + d['data']['name']);
 
 			var bodyPaddingTop = 10;
@@ -74,19 +81,15 @@ var updateViz = function () {
 			var popoverWidth = $('#popover785269').width();
 			var popoverArrowWidth = 10;
 			var popoverBorderWidth = $('#popover785269').css('border-width');
-			console.log(popoverArrowWidth)
 			var cellWidth = d.x1 - d.x0;
 			var cellHeight = d.y1 - d.y0;
 
 			var heightDiff = (popoverHeight/2 - cellHeight);
-			console.log(heightDiff + " height diff")
 
 			var xPosition = d.x0 + cellWidth;
 			var yPosition = d.y0 - heightDiff - cellHeight / 2;
 
 			if (yPosition < 0) {
-				// xPosition = d.x0;
-				// yPosition = d.y0;
 
 				xPosition = d.x0 -(popoverWidth / 2 - cellWidth / 2 );
 				yPosition = d.y0 + cellHeight;
@@ -96,8 +99,6 @@ var updateViz = function () {
 					var arrowMarginLeft = $('#popover785269 .arrow').css('margin-left');
 					// $('#popover785269 .arrow').css('left', - arrowMarginLeft);
 				}
-
-				console.log('in if')
 
 				$('#popover785269').removeClass("right top")
 				$('#popover785269').addClass("bottom")
@@ -112,10 +113,17 @@ var updateViz = function () {
 				$('#popover785269').addClass("right")
 			}
 
-			$('#popover785269').css('left', xPosition);
-			$('#popover785269').css('top', yPosition)
+			$('#popover785269').animate({
+				'left': xPosition,
+				'top': yPosition
+			}, { 
+				queue: false,
+				duration: 150
+			});
 		}).on('mouseout', function (d) {
 			// $('#popover785269').css("display", "none");
+			// $('#popover785269').fadeOut();
+			d3.select(this).attr('fill-opacity', 0.9);
 		})
 		// .attr("data-toggle", "popover")
 		// .attr("data-content", "hey")
