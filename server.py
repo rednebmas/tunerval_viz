@@ -69,6 +69,18 @@ async def test(request):
 
 	return json(res)
 
+@app.route("/compare")
+async def compare(request):
+	cursor.execute("""SELECT [metrics>Difficulty], answer_order FROM QuestionAnswers
+		WHERE [client>client_id] = '6C55CFB1-12AF-4128-9C7B-CA5B261724D3'
+			AND [metrics>interval] = 2
+		ORDER BY [event_timestamp]
+	""")
+
+	rows = cursor.fetchall()
+
+	return json([(r['answer_order'], r['metrics>Difficulty']) for r in rows])
+
 def date_to_unix_epoch_milliseconds(date_str, time_str):
 	""" @param date_str 
 			expected format ex: 4/26/2016

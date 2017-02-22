@@ -1,0 +1,18 @@
+text {
+    fill: white;
+}
+
+.tick line, .axis .domain {
+	stroke: white;
+}
+
+.overlay {
+	fill: none;
+	pointer-events: all;
+}
+
+.focus circle {
+	fill: red;
+	stroke: red;
+	fill-opacity: .5;
+}

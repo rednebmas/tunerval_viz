@@ -55,7 +55,11 @@ var updateViz = function () {
 		.attr("fill", function(d) { return filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id); })
 		.attr("fill-opacity", .9)
 		.on('click', function (d) {
-			d3.select(this).attr('fill', 'black');
+			var fillColor = 'red';
+			if (d3.select(this).attr('fill') == 'red') {
+				fillColor = filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id);
+			}
+			d3.select(this).attr('fill', fillColor);
 		})
 		.on('mouseover', function (d) {
 			// var rectTopLeftOffsetX = 20;
@@ -122,7 +126,7 @@ var updateViz = function () {
 			});
 		}).on('mouseout', function (d) {
 			// $('#popover785269').css("display", "none");
-			// $('#popover785269').fadeOut();
+			// console.log('mouseout')
 			d3.select(this).attr('fill-opacity', 0.9);
 		})
 		// .attr("data-toggle", "popover")
@@ -137,7 +141,7 @@ var updateViz = function () {
 var filtersChanged = function () {
 	console.log('filtersChanged called');
 	$('#loading-gif').css('display', 'initial');
-	$.get('http://0.0.0.0:8888/treemap', filters, function (_data) 
+	$.get('treemap', filters, function (_data) 
 	{
 		var dataWasUndefined = typeof data == "undefined";
 		data = _data;
