@@ -82,3 +82,12 @@ var UIInit = function () {
 	$("#questions-answered-slider-range").slider('values', 1, data['max_questions_answered']);
 }
 
+//
+// Compare button
+//
+
+$('#compare-btn').click(function () {
+	var newLoc = UpdateQueryString("filter", JSON.stringify(selection), window.location.origin + "/compare.html");
+	window.location = newLoc;
+})
+

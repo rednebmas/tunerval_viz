@@ -1,8 +1,10 @@
 import sqlite3
 import time
+from json import loads as json_loads
 from datetime import datetime
 from sanic import Sanic
 from sanic.response import json
+from interval_name_converter import interval_name_converter
 
 # setup live reload server
 from aoiklivereload import LiveReloader
@@ -52,7 +54,7 @@ async def test(request):
 			'children': [],
 			'device>platform>name': row['device>platform>name']
 		}
-		
+
 		if request.args.get('breakdownByInterval') == 'true':
 			for key in row.keys():
 				if key == 'client>client_id' or key == 'total_questions_answered' or key == 'device>platform>name':
@@ -71,15 +73,27 @@ async def test(request):
 
 @app.route("/compare")
 async def compare(request):
-	cursor.execute("""SELECT [metrics>Difficulty], answer_order FROM QuestionAnswers
-		WHERE [client>client_id] = '6C55CFB1-12AF-4128-9C7B-CA5B261724D3'
-			AND [metrics>interval] = 2
-		ORDER BY [event_timestamp]
-	""")
+	filter_arr = json_loads(request.args.get('filter'))
 
-	rows = cursor.fetchall()
+	# fill with arrays of points
+	# e.g. final ret would be [[{time: 1, order: 1, difficulty: 98.7}, ... more points], [ ... second line ... ]]
+	ret = []
+	for f in filter_arr:
+		f['interval'] = interval_name_converter[f['interval']]
+		filter_clause = "[client>client_id] = {client_id} AND [metrics>interval] = {interval}".format(**f)
+		cursor.execute("""
+			SELECT [metrics>Difficulty], [answer_order], [event_timestamp] FROM QuestionAnswers
+			WHERE [client>client_id] = ? AND [metrics>interval] = ?
+			ORDER BY [event_timestamp]
+		""", (f['client_id'], f['interval']))
+		rows = map(lambda r: {
+			'order' : r['answer_order'],
+			'difficulty' : r['metrics>Difficulty'],
+			'timestamp' : r['event_timestamp']
+		}, cursor.fetchall())
+		ret.append(rows)
 
-	return json([(r['answer_order'], r['metrics>Difficulty']) for r in rows])
+	return json(ret)
 
 def date_to_unix_epoch_milliseconds(date_str, time_str):
 	""" @param date_str 

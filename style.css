@@ -46,8 +46,9 @@ input#questions-answered-slider-amount {
 
 #popover785269 {
 	color: black;
-	opacity: .925;
+	opacity: .95;
 	max-width: 360px;
+	width: 353px;
 	pointer-events: none;
 }
 

@@ -21,12 +21,12 @@ var yAxis = d3.axisLeft()
 	.scale(yScale);
 
 var line_0 = d3.line()
-    .x(function(d) { return xScale(d[0]); })
+    .x(function(d) { return xScale(d.order); })
     .y(function(d) { return svgHeight / 2; });
 
 var line = d3.line()
-    .x(function(d) { return xScale(d[0]); })
-    .y(function(d) { return yScale(d[1]); });
+    .x(function(d) { return xScale(d.order); })
+    .y(function(d) { return yScale(d.difficulty); });
 
 var svg = d3.select("svg")
 	.attr("width", width + margin.left + margin.right)
@@ -37,7 +37,6 @@ svg
 	.append('g')
 		.attr("class", "x axis")
 		.attr("transform", "translate(0," + height + ")")
-		// .attr("stroke", "white")
 		.call(xAxis)
 	.append("text")
 		.attr("class", "label")
@@ -58,7 +57,9 @@ svg
 		.style("text-anchor", "end")
 		.text("difficulty");
 
-$.get('compare', function (data) {
+// var filter = JSON.parse(getQueryParams(window.location.search).filter);
+$.get('compare' + window.location.search, function (data) {
+	data = data[0];
 	svg.append("path")
 		.datum(data)
 		.attr("fill", "none")
@@ -69,7 +70,6 @@ $.get('compare', function (data) {
 		.attr("d", line_0)
 		.transition().duration(1000)
 		.attr("d", line)
-
 
 	var focus = svg.append("g")
 		.attr("class", "focus")
@@ -90,16 +90,16 @@ $.get('compare', function (data) {
 		.on("mouseout", function() { focus.style("display", "none"); })
 		.on("mousemove", mousemove);
 
-	bisectDate = d3.bisector(function(d) { return d[0]; }).left;
+	bisectDate = d3.bisector(function(d) { return d.order; }).left;
 
 	function mousemove() {
 		var x0 = xScale.invert(d3.mouse(this)[0]),
 		i = bisectDate(data, x0, 1),
 		d0 = data[i - 1],
 		d1 = data[i],
-		d = x0 - d0[0] > d1[0] - x0 ? d1 : d0;
-		focus.attr("transform", "translate(" + xScale(d[0]) + "," + yScale(d[1]) + ")");
-		focus.select("text").text("(" + d[0] + ", " + d[1] + ")");
+		d = x0 - d0.orde > d1.order - x0 ? d1 : d0;
+		focus.attr("transform", "translate(" + xScale(d.order) + "," + yScale(d.difficulty) + ")");
+		focus.select("text").text("(" + d.order + ", " + d.difficulty + ")");
 	}
 });
 

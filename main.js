@@ -5,6 +5,15 @@ filters = {
 	// totalQuestionsAnswered: [0, 100]
 }
 
+selection = [
+	/*
+	{
+		client_id: "6C55CFB1-12AF-4128-9C7B-CA5B261724D3"
+		interval: "asc minor second"
+	}
+	*/
+]
+
 var svg = d3.select("svg"),
 	width = +svg.node().getBoundingClientRect().width,
 	height = +svg.node().getBoundingClientRect().height;
@@ -56,9 +65,23 @@ var updateViz = function () {
 		.attr("fill-opacity", .9)
 		.on('click', function (d) {
 			var fillColor = 'red';
-			if (d3.select(this).attr('fill') == 'red') {
-				fillColor = filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id);
+
+			var currentSelection = {
+				client_id: d.data['client_id'],
+				interval: d.data['name']
 			}
+
+			var cellIsSelected = d3.select(this).attr('fill') == 'red'
+			if (cellIsSelected) {
+				fillColor = filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id);
+				selection = selection.filter(function (selected) {
+					return selected.client_id != currentSelection.client_id &&
+						   selected.interval != currentSelection.interval;
+				})
+			} else {
+				selection.push(currentSelection);
+			}
+
 			d3.select(this).attr('fill', fillColor);
 		})
 		.on('mouseover', function (d) {
@@ -117,22 +140,19 @@ var updateViz = function () {
 				$('#popover785269').addClass("right")
 			}
 
+			$('#popover785269').stop();
 			$('#popover785269').animate({
 				'left': xPosition,
 				'top': yPosition
 			}, { 
 				queue: false,
-				duration: 150
+				duration: 25
 			});
 		}).on('mouseout', function (d) {
 			// $('#popover785269').css("display", "none");
 			// console.log('mouseout')
 			d3.select(this).attr('fill-opacity', 0.9);
 		})
-		// .attr("data-toggle", "popover")
-		// .attr("data-content", "hey")
-		// .attr("title", "the title")
-		// .attr("data-trigger", "mouseover")
 
 	cell.exit().remove();
 	$("[data-toggle=popover]").popover();
