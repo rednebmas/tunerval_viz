@@ -2,7 +2,7 @@ var dataset = [[1,1], [2,2], [3,3], [4,4], [5,5]];
 
 var svgWidth = $('svg').width();
 var svgHeight = $('svg').height();
-var margin = { top: 30, right: 30, bottom: 30, left: 30 },
+var margin = { top: 30, right: 30, bottom: 30, left: 60 },
 	width = +svgWidth - margin.left - margin.right,
 	height = +svgHeight - margin.top - margin.bottom
 
@@ -43,29 +43,42 @@ svg
 		.attr("x", width)
 		.attr("y", -6)
 		.style("text-anchor", "end")
-		.text("x-axis");
+		.text("order");
 
 svg
 	.append('g')
 		.attr("class", "y axis")
 		.call(yAxis)
 	.append("text")
+		.text("difficulty")
 		.attr("class", "label")
 		.attr("transform", "rotate(-90)")
-		.attr("y", 6)
-		.attr("x", -svgHeight/2 )
-		.style("text-anchor", "end")
-		.text("difficulty");
+		.attr("y", -35)
+		.attr("x", function (d) {
+			return -svgHeight / 2 + margin.top + this.getComputedTextLength() / 2;
+		})
+		// .style('fill', 'darkOrange')
+		.style("text-anchor", "end");
 
 // var filter = JSON.parse(getQueryParams(window.location.search).filter);
-$.get('compare' + window.location.search, function (data) {
+$.get('compare' + window.location.search, function (_data) {
+
+	data = _data;
+
 	data = data[0];
+
+	xScale = d3.scaleLinear()
+	.domain([0, d3.max(data, function (d) {
+		return d.order - 1;
+	})])
+	.range([0, width]);
+
 	svg.append("path")
 		.datum(data)
 		.attr("fill", "none")
 		.attr("stroke", "white")
 		.attr("stroke-linejoin", "round")
-		.attr("stroke-linecap", "round")
+		// .attr("stroke-linecap", "round")
 		.attr("stroke-width", 1.0)
 		.attr("d", line_0)
 		.transition().duration(1000)
@@ -94,10 +107,10 @@ $.get('compare' + window.location.search, function (data) {
 
 	function mousemove() {
 		var x0 = xScale.invert(d3.mouse(this)[0]),
-		i = bisectDate(data, x0, 1),
+		i = Math.min(bisectDate(data, x0, 1), data.length - 1), 
 		d0 = data[i - 1],
-		d1 = data[i],
-		d = x0 - d0.orde > d1.order - x0 ? d1 : d0;
+		d1 = data[i];
+		var d = x0 - d0.order > d1.order - x0 ? d1 : d0;
 		focus.attr("transform", "translate(" + xScale(d.order) + "," + yScale(d.difficulty) + ")");
 		focus.select("text").text("(" + d.order + ", " + d.difficulty + ")");
 	}

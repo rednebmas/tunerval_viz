@@ -16,3 +16,12 @@ text {
 	stroke: red;
 	fill-opacity: .5;
 }
+
+svg#order-line-chart {
+    border: 1px solid white;
+}
+
+.axis text.label {
+	fill: white;
+	font-size: 12px;
+}
