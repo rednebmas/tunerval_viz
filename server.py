@@ -33,15 +33,17 @@ async def test(request):
 @app.route("/treemap")
 async def test(request):
 	print(request.args)
+
+	totalQuestionsAnsweredRange = [int(v) for v in request.args.getlist('totalQuestionsAnswered[]')]
 	date_start = date_to_unix_epoch_milliseconds(request.args.get('dateStart'), "12:00AM")
 	date_end = date_to_unix_epoch_milliseconds(request.args.get('dateEnd'), "11:59PM")
 
 	# the basis of the response
 	res = { "name" : "data", "children" : [] }
 
-	# load the sql query
+	# load and exectue the sql query
 	with open('python/questions_answer_per_user_per_interval.sql') as f:
-		cursor.execute(f.read(), (date_start, date_end))
+		cursor.execute(f.read(), (date_start, date_end, totalQuestionsAnsweredRange[0], totalQuestionsAnsweredRange[1]))
 
 	# get all results from the query
 	rows = cursor.fetchall()

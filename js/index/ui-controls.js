@@ -2,6 +2,8 @@
 // Number of questions answered slider
 //
 
+var sliderTimeout;
+
 // setup slider callback
 $("#questions-answered-slider-range").slider({
 	range: true,
@@ -9,16 +11,20 @@ $("#questions-answered-slider-range").slider({
 	max: 1,
 	values: [0, 1], 
 	slide: function(event, ui) {
-		$("#questions-answered-slider-amount").val(ui.values[ 0 ] + " - " + ui.values[ 1 ]);
+		$("#questions-answered-slider-amount").val(ui.values[0] + " - " + ui.values[1]);
+		filters.totalQuestionsAnswered = [ui.values[0], ui.values[1]];
+
+		if (sliderTimeout) {
+			clearTimeout(sliderTimeout);
+		}
+
+		sliderTimeout = setTimeout(function() { 
+			filtersChanged();
+		}, 500);
 	}
 });
 
 var updateSlider = function () {
-	$("#questions-answered-slider-range").slider({
-		min: data['min_questions_answered'],
-		max: data['max_questions_answered']
-	});
-
 	// update input box text to reflect the new values
 	$( "#questions-answered-slider-amount" ).val($("#questions-answered-slider-range")
 		.slider("values", 0) + " - " + $("#questions-answered-slider-range")
@@ -80,6 +86,7 @@ var UIInit = function () {
 	});
 	$("#questions-answered-slider-range").slider('values', 0, data['min_questions_answered']);
 	$("#questions-answered-slider-range").slider('values', 1, data['max_questions_answered']);
+
 }
 
 //

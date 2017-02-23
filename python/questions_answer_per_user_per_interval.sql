@@ -33,4 +33,5 @@ SELECT [client>client_id],
 
 FROM QuestionAnswers 
 WHERE [event_timestamp] > ? AND [event_timestamp] < ?
-GROUP BY [client>client_id];
+GROUP BY [client>client_id]
+HAVING [total_questions_answered] > ? and [total_questions_answered] < ?;

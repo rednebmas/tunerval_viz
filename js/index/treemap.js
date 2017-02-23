@@ -2,11 +2,11 @@ filters = {
 	dateStart: '4/26/2016',
 	dateEnd: moment().format('M/D/YYYY'),
 	breakdownByInterval: true,
-	// totalQuestionsAnswered: [0, 100]
+	totalQuestionsAnswered: [0, 10000]
 }
 
 selection = [
-	/*
+	/* example of data format
 	{
 		client_id: "6C55CFB1-12AF-4128-9C7B-CA5B261724D3"
 		interval: "asc minor second"
@@ -33,7 +33,11 @@ var updateViz = function () {
 		return d.size;
 	}
 
-	console.log('updateViz called')
+	// if the data set is empty, clear the graphic
+	if (data.children.length < 1) {
+		$('svg').html('')
+		return;
+	}
 
 	var root = d3.hierarchy(data)
 		.eachBefore(function(d) { 
@@ -61,7 +65,10 @@ var updateViz = function () {
 		.attr("id", function(d) { return d.data.id; })
 		.attr("width", function(d) { return d.x1 - d.x0; })
 		.attr("height", function(d) { return d.y1 - d.y0; })
-		.attr("fill", function(d) { return filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id); })
+		.attr("fill", function(d) { 
+			// console.log(d);
+			return filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id); 
+		})
 		.attr("fill-opacity", .9)
 		.on('click', function (d) {
 			var fillColor = 'red';
