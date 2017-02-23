@@ -1,5 +1,6 @@
 var orderLineChart = new OrderLineChart();
-console.log(orderLineChart);
+var timeLineChart = new TimeLineChart();
+
 $.get('compare' + window.location.search, function (_data) {
 	data = _data;
 
@@ -9,5 +10,5 @@ $.get('compare' + window.location.search, function (_data) {
 	data = _data[0]; 
 
 	orderLineChart.update();
-	// updateTimeLineChart();
+	timeLineChart.update();
 });
