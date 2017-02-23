@@ -27,13 +27,13 @@ var TimeLineChart = function() { return {
 			.append('g')
 				.attr("class", "x axis")
 				.attr("transform", "translate(0," + this.height + ")")
-				.call(this.orderXAxis)
+				.call(this.xAxis)
 			.append("text")
 				.attr("class", "label")
 				.attr("x", this.width)
 				.attr("y", -6)
 				.style("text-anchor", "end")
-				.text("time relative to first answer");
+				.text("time");
 
 		var self = this;
 		this.timeSvg
@@ -41,14 +41,13 @@ var TimeLineChart = function() { return {
 				.attr("class", "y axis")
 				.call(this.yAxis)
 			.append("text")
-				.text("difficulty")
+				.text("difficulty (in cents from correct freq.)")
 				.attr("class", "label")
 				.attr("transform", "rotate(-90)")
 				.attr("y", -35)
 				.attr("x", function (d) {
 					return -self.svgHeight / 2 + self.margin.top + this.getComputedTextLength() / 2;
 				})
-				// .style('fill', 'darkOrange')
 				.style("text-anchor", "end");
 
 		return this;
@@ -57,11 +56,11 @@ var TimeLineChart = function() { return {
 	setupScalesAndAxises: function () {
 		var self = this;
 
-		this.xScale = d3.scaleLinear()
-			.domain([0, 600])
+		this.xScale = d3.scaleTime()
+			.domain([new Date(2016, 6, 23), new Date()])
 			.range([0, this.width]);
 
-		this.orderXAxis = d3.axisBottom()
+		this.xAxis = d3.axisBottom()
 			.scale(this.xScale);
 
 		this.yScale = d3.scaleLinear()
@@ -81,21 +80,21 @@ var TimeLineChart = function() { return {
 	},
 
 	update: function() {
-		console.log('msg');
-		this.xScale = d3.scaleLinear()
-		.domain([d3.min(data, function (d) {
+		var minTime = d3.min(data, function (d) {
 			return d.timestamp;
-		}), d3.max(data, function (d) {
+		});
+		var maxTime = d3.max(data, function (d) {
 			return d.timestamp;
-		})])
-		.range([0, this.width]);
+		});
+
+		this.xScale.domain([new Date(minTime), new Date(maxTime)])
+		this.timeSvg.select('.x.axis').call(this.xAxis)
 
 		this.timeSvg.append("path")
 			.datum(data)
 			.attr("fill", "none")
 			.attr("stroke", "white")
 			.attr("stroke-linejoin", "round")
-			// .attr("stroke-linecap", "round")
 			.attr("stroke-width", 1.0)
 			.attr("d", this.line_0)
 			.transition().duration(1000)
@@ -121,7 +120,6 @@ var TimeLineChart = function() { return {
 	setupFocusDot: function () {
 		this.focus = this.timeSvg.append("g")
 			.attr("class", "focus")
-			// .style("display", "none"),
 
 		this.focus.append("circle")
 			.attr("r", 5)
@@ -146,6 +144,6 @@ var TimeLineChart = function() { return {
 	showFocusForDat: function (d) {
 		this.focus.style("display", "block"),
 		this.focus.attr("transform", "translate(" + this.xScale(d.timestamp) + "," + this.yScale(d.difficulty) + ")");
-		this.focus.select("text").text("(" + d.timestamp + ", " + moment(d.timestamp).format("DD MMM YYYY hh:mm a") + ", " + d.difficulty + ")");
+		this.focus.select("text").text("(" + moment(d.timestamp).format("DD MMM YYYY hh:mm a") + ", " + d.difficulty + ")");
 	}
 }.init(); };

@@ -21,10 +21,11 @@ text {
 }
 
 svg#order-line-chart, svg#time-line-chart {
-    border: 1px solid white;
+    /*border: 1px solid white;*/
 }
 
 .axis text.label {
 	fill: white;
-	font-size: 12px;
+	font-size: 16px;
+	font-weight: 300;
 }

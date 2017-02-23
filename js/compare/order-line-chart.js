@@ -33,7 +33,7 @@ var OrderLineChart = function() { return {
 				.attr("x", this.width)
 				.attr("y", -6)
 				.style("text-anchor", "end")
-				.text("order");
+				.text("answer #");
 
 		var self = this;
 		this.orderSvg
@@ -41,14 +41,13 @@ var OrderLineChart = function() { return {
 				.attr("class", "y axis")
 				.call(this.yAxis)
 			.append("text")
-				.text("difficulty")
+				.text("difficulty (in cents from correct freq.)")
 				.attr("class", "label")
 				.attr("transform", "rotate(-90)")
 				.attr("y", -35)
 				.attr("x", function (d) {
 					return -self.svgHeight / 2 + self.margin.top + this.getComputedTextLength() / 2;
 				})
-				// .style('fill', 'darkOrange')
 				.style("text-anchor", "end");
 
 		return this;
@@ -58,7 +57,7 @@ var OrderLineChart = function() { return {
 		var self = this;
 
 		this.xScale = d3.scaleLinear()
-			.domain([0, 600])
+			.domain([1, 600])
 			.range([0, this.width]);
 
 		this.orderXAxis = d3.axisBottom()
@@ -81,12 +80,15 @@ var OrderLineChart = function() { return {
 	},
 
 	update: function() {
-		console.log('msg');
-		this.xScale = d3.scaleLinear()
-		.domain([0, d3.max(data, function (d) {
-			return d.order - 1;
-		})])
-		.range([0, this.width]);
+		var min = d3.min(data, function (d) {
+			return d.order;
+		});
+		var max = d3.max(data, function (d) {
+			return d.order;
+		});
+
+		this.xScale.domain([min, max])
+		this.orderSvg.select('.x.axis').call(this.orderXAxis)
 
 		this.orderSvg.append("path")
 			.datum(data)
