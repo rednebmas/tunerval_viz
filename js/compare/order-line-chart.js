@@ -107,7 +107,10 @@ var OrderLineChart = function() { return {
 			.attr("width", this.width)
 			.attr("height", this.height)
 			.on("mouseover", function() { self.focus.style("display", null); })
-			.on("mouseout", function() { self.focus.style("display", "none"); })
+			.on("mouseout", function() { 
+				self.focus.style("display", "none"); 
+				timeLineChart.focus.style("display", "none"); 
+			})
 			.on("mousemove", this.onMouseMove(self));
 	},
 
@@ -117,6 +120,7 @@ var OrderLineChart = function() { return {
 		this.focus = this.orderSvg.append("g")
 			.attr("class", "focus")
 			.style("display", "none"),
+
 		this.focus.append("circle")
 			.attr("r", 5)
 
@@ -132,8 +136,15 @@ var OrderLineChart = function() { return {
 			d0 = data[i - 1],
 			d1 = data[i];
 			var d = x0 - d0.order > d1.order - x0 ? d1 : d0;
-			self.focus.attr("transform", "translate(" + self.xScale(d.order) + "," + self.yScale(d.difficulty) + ")");
-			self.focus.select("text").text("(" + d.order + ", " + d.difficulty + ")");
+
+			self.showFocusForDat(d);
+			timeLineChart.showFocusForDat(d);
 		}
+	},
+
+	showFocusForDat: function (d) {
+		this.focus.style("display", "block"),
+		this.focus.attr("transform", "translate(" + this.xScale(d.order) + "," + this.yScale(d.difficulty) + ")");
+		this.focus.select("text").text("(" + d.order + ", " + d.difficulty + ")");
 	}
 }.init(); };

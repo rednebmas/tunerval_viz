@@ -109,7 +109,10 @@ var TimeLineChart = function() { return {
 			.attr("width", this.width)
 			.attr("height", this.height)
 			.on("mouseover", function() { self.focus.style("display", null); })
-			.on("mouseout", function() { self.focus.style("display", "none"); })
+			.on("mouseout", function() { 
+				self.focus.style("display", "none"); 
+				orderLineChart.focus.style("display", "none"); 
+			})
 			.on("mousemove", this.onMouseMove(self));
 	},
 
@@ -118,7 +121,8 @@ var TimeLineChart = function() { return {
 	setupFocusDot: function () {
 		this.focus = this.timeSvg.append("g")
 			.attr("class", "focus")
-			.style("display", "none"),
+			// .style("display", "none"),
+
 		this.focus.append("circle")
 			.attr("r", 5)
 
@@ -134,8 +138,14 @@ var TimeLineChart = function() { return {
 			d0 = data[i - 1],
 			d1 = data[i];
 			var d = x0 - d0.timestamp > d1.timestamp - x0 ? d1 : d0;
-			self.focus.attr("transform", "translate(" + self.xScale(d.timestamp) + "," + self.yScale(d.difficulty) + ")");
-			self.focus.select("text").text("(" + d.timestamp + ", " + moment(d.timestamp).format("DD MMM YYYY hh:mm a") + ", " + d.difficulty + ")");
+			self.showFocusForDat(d);
+			orderLineChart.showFocusForDat(d);
 		}
+	},
+
+	showFocusForDat: function (d) {
+		this.focus.style("display", "block"),
+		this.focus.attr("transform", "translate(" + this.xScale(d.timestamp) + "," + this.yScale(d.difficulty) + ")");
+		this.focus.select("text").text("(" + d.timestamp + ", " + moment(d.timestamp).format("DD MMM YYYY hh:mm a") + ", " + d.difficulty + ")");
 	}
 }.init(); };

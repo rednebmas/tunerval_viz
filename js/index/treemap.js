@@ -149,7 +149,7 @@ var updateViz = function () {
 				duration: 25
 			});
 		}).on('mouseout', function (d) {
-			// $('#popover785269').css("display", "none");
+			$('#popover785269').css("display", "none");
 			// console.log('mouseout')
 			d3.select(this).attr('fill-opacity', 0.9);
 		})
