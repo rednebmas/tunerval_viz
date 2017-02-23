@@ -1,3 +1,6 @@
+body>.row {
+	height: 50%;
+}
 text {
     fill: white;
 }
@@ -17,7 +20,7 @@ text {
 	fill-opacity: .5;
 }
 
-svg#order-line-chart {
+svg#order-line-chart, svg#time-line-chart {
     border: 1px solid white;
 }
 

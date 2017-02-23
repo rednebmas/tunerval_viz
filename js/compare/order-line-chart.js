@@ -1,7 +1,7 @@
 var dataset = [[1,1], [2,2], [3,3], [4,4], [5,5]];
 
-var svgWidth = $('svg').width();
-var svgHeight = $('svg').height();
+var svgWidth = $('#order-line-chart').width();
+var svgHeight = $('#order-line-chart').height();
 var margin = { top: 30, right: 30, bottom: 30, left: 60 },
 	width = +svgWidth - margin.left - margin.right,
 	height = +svgHeight - margin.top - margin.bottom
@@ -10,7 +10,7 @@ var xScale = d3.scaleLinear()
 	.domain([0, 600])
 	.range([0, width]);
 
-var xAxis = d3.axisBottom()
+var orderXAxis = d3.axisBottom()
 	.scale(xScale);
 
 var yScale = d3.scaleLinear()
@@ -28,16 +28,16 @@ var line = d3.line()
     .x(function(d) { return xScale(d.order); })
     .y(function(d) { return yScale(d.difficulty); });
 
-var svg = d3.select("svg")
+var orderSvg = d3.select("#order-line-chart")
 	.attr("width", width + margin.left + margin.right)
 	.attr("height", height + margin.top + margin.bottom)
 	.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-svg
+orderSvg
 	.append('g')
 		.attr("class", "x axis")
 		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis)
+		.call(orderXAxis)
 	.append("text")
 		.attr("class", "label")
 		.attr("x", width)
@@ -45,7 +45,7 @@ svg
 		.style("text-anchor", "end")
 		.text("order");
 
-svg
+orderSvg
 	.append('g')
 		.attr("class", "y axis")
 		.call(yAxis)
@@ -62,7 +62,6 @@ svg
 
 // var filter = JSON.parse(getQueryParams(window.location.search).filter);
 $.get('compare' + window.location.search, function (_data) {
-
 	data = _data;
 
 	data = data[0];
@@ -73,7 +72,7 @@ $.get('compare' + window.location.search, function (_data) {
 	})])
 	.range([0, width]);
 
-	svg.append("path")
+	orderSvg.append("path")
 		.datum(data)
 		.attr("fill", "none")
 		.attr("stroke", "white")
@@ -84,18 +83,18 @@ $.get('compare' + window.location.search, function (_data) {
 		.transition().duration(1000)
 		.attr("d", line)
 
-	var focus = svg.append("g")
+	var focus = orderSvg.append("g")
 		.attr("class", "focus")
 		.style("display", "none");
 
 	focus.append("circle")
-		.attr("r", 4.5);
+		.attr("r", 5)
 
 	focus.append("text")
 		.attr("x", 9)
 		.attr("dy", ".35em");
 
-	svg.append("rect")
+	orderSvg.append("rect")
 		.attr("class", "overlay")
 		.attr("width", width)
 		.attr("height", height)

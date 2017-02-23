@@ -7,7 +7,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 	<!-- jQuery -->
-	<script src="lib/moment.min.js"></script>
+	<script src="/lib/moment.min.js"></script>
 
 	<!-- d3 -->
 	<script src="https://d3js.org/d3.v4.min.js"></script>
@@ -29,10 +29,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
 
 	<!-- Styles -->
-	<link href="style.css" rel="stylesheet">
-	<link href="compare-style.css" rel="stylesheet">
+	<link href="/css/common.css" rel="stylesheet">
+	<link href="/css/compare.css" rel="stylesheet">
 	
-	<script src="url-helpers.js"></script>
+	<script src="/lib/url-helpers.js"></script>
 </head>
 <body>
 	<div class="row">
@@ -42,6 +42,14 @@
 			<div class="popover fade right in" role="tooltip" id="popover785269" style="position: absolute;"><div class="arrow"></div><h3 class="popover-title" style="/*display: none;*/"></h3><div class="popover-content">Some content</div></div>
 		</div>
 	</div>
-	<script src="compare-viz.js"></script>
+	<div class="row">
+		<div class="col-md-8 col col1">
+			<svg id="time-line-chart">
+			</svg>
+			<div class="popover fade right in" role="tooltip" id="popover785269" style="position: absolute;"><div class="arrow"></div><h3 class="popover-title" style="/*display: none;*/"></h3><div class="popover-content">Some content</div></div>
+		</div>
+	</div>
+	<script src="/js/compare/order-line-chart.js"></script>
+	<script src="/js/compare/time-line-chart.js"></script>
 </body>
 </html>

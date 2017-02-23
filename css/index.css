@@ -1,0 +1,63 @@
+body {
+	padding: 20px 20px;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: black;
+	color: white;
+}
+
+svg {
+	font: 10px sans-serif;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+}
+
+html, body, body>.row, .row>.col {
+	height: 100%;
+}
+
+body>.row {
+	margin: 0px;
+}
+
+.col1 {
+	padding: 0px;
+}
+
+.ui-controls>.row {
+	padding: 5px 5px;
+}
+
+#loading-gif {
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+	width: 256px;
+    height: 256px;
+}
+
+#questions-answered-slider-range {
+	margin: 9px 0px;
+}
+
+input#questions-answered-slider-amount {
+	background-color:black;
+}
+
+#popover785269 {
+	color: black;
+	opacity: .95;
+	max-width: 360px;
+	width: 353px;
+	pointer-events: none;
+}
+
+.inner-border {
+  x: 0;
+  y: 0;
+  width: 100%;
+  height: 100%;
+  fill: red;
+  stroke-width: 10;
+  stroke: blue;
+}

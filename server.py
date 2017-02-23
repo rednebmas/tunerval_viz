@@ -4,7 +4,7 @@ from json import loads as json_loads
 from datetime import datetime
 from sanic import Sanic
 from sanic.response import json
-from interval_name_converter import interval_name_converter
+from python.interval_name_converter import interval_name_converter
 
 # setup live reload server
 from aoiklivereload import LiveReloader
@@ -18,7 +18,11 @@ cursor = conn.cursor()
 
 # create app
 app = Sanic()
-app.static('/', './')
+app.static('/css', './css')
+app.static('/js', './js')
+app.static('/img', './img')
+app.static('/lib', './lib')
+app.static('/', './html')
 
 # routes
 @app.route("/")
@@ -36,7 +40,7 @@ async def test(request):
 	res = { "name" : "data", "children" : [] }
 
 	# load the sql query
-	with open('questions_answer_per_user_per_interval.sql') as f:
+	with open('python/questions_answer_per_user_per_interval.sql') as f:
 		cursor.execute(f.read(), (date_start, date_end))
 
 	# get all results from the query
