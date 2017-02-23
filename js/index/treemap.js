@@ -2,7 +2,8 @@ filters = {
 	dateStart: '4/26/2016',
 	dateEnd: moment().format('M/D/YYYY'),
 	breakdownByInterval: true,
-	totalQuestionsAnswered: [0, 10000]
+	totalQuestionsAnswered: [0, 10000],
+	colorBy: 'Client ID' // this doesn't need to be sent to the server
 }
 
 selection = [
@@ -35,7 +36,7 @@ var updateViz = function () {
 
 	// if the data set is empty, clear the graphic
 	if (data.children.length < 1) {
-		$('svg').html('')
+		$('svg').html('');
 		return;
 	}
 
@@ -46,8 +47,7 @@ var updateViz = function () {
 				// console.log(d);
 				d['data']['device>platform>name'] = d.parent['data']['device>platform>name'];
 				d['data']['client_id'] = d.parent['data']['name'];
-			} else {
-			}
+			} 
 		})
 		.sum(sumBySize)
 		.sort(function(a, b) { return b.height - a.height || b.value - a.value; });
@@ -67,10 +67,17 @@ var updateViz = function () {
 		.attr("height", function(d) { return d.y1 - d.y0; })
 		.attr("fill", function(d) { 
 			// console.log(d);
-			return filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id); 
+			if (filters.colorBy == 'Client ID') {
+				return filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id); 
+			} else if (filters.colorBy == 'Interval') {
+				return color(d.data.name); 
+			} else if (filters.colorBy == 'Platform') {
+				return color(d.data['device>platform>name']);
+			}
 		})
 		.attr("fill-opacity", .9)
 		.on('click', function (d) {
+			/*
 			var fillColor = 'red';
 
 			var currentSelection = {
@@ -90,6 +97,18 @@ var updateViz = function () {
 			}
 
 			d3.select(this).attr('fill', fillColor);
+			*/
+			if (filters.breakdownByInterval == false) {
+				alert('In order to view score history you must be in "Breakdown by interval" mode.')
+				return;
+			}
+			
+			var currentSelection = [{
+				client_id: d.data['client_id'],
+				interval: d.data['name']
+			}];
+			var newLoc = UpdateQueryString("filter", JSON.stringify(currentSelection), window.location.origin + "/compare.html");
+			window.open(newLoc);
 		})
 		.on('mouseover', function (d) {
 			// var rectTopLeftOffsetX = 20;

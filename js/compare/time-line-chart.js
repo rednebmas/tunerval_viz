@@ -33,6 +33,7 @@ var TimeLineChart = function() { return {
 				.attr("x", this.width)
 				.attr("y", -6)
 				.style("text-anchor", "end")
+				.style('fill', 'orange')
 				.text("time");
 
 		var self = this;
@@ -124,6 +125,14 @@ var TimeLineChart = function() { return {
 		this.focus.append("circle")
 			.attr("r", 5)
 
+		this.focus.append("rect")
+				.attr("fill", "black")
+				.attr("fill-opacity", .9)
+				.attr("width", 180)
+				.attr("height", 20)
+				.style("y", -9)
+				.style("x", 7);
+
 		this.focus.append("text")
 			.attr("x", 9)
 			.attr("dy", ".35em");
@@ -142,8 +151,26 @@ var TimeLineChart = function() { return {
 	},
 
 	showFocusForDat: function (d) {
+		var xPos = this.xScale(d.timestamp);
+		var anchor = "start";
+		var dxText = 0;
+		var dxBG = 7;
+
+		console.log(xPos);
+		if (xPos + 180 > this.width) {
+			anchor = "end";
+			dxText = -19;
+			dxBG = dxText - 180;
+		} 
+
 		this.focus.style("display", "block"),
-		this.focus.attr("transform", "translate(" + this.xScale(d.timestamp) + "," + this.yScale(d.difficulty) + ")");
-		this.focus.select("text").text("(" + moment(d.timestamp).format("DD MMM YYYY hh:mm a") + ", " + d.difficulty + ")");
+		this.focus.attr("transform", "translate(" + xPos + "," + this.yScale(d.difficulty) + ")");
+		this.focus.select("text")
+			.text("(" + moment(d.timestamp).format("DD MMM YYYY hh:mm a") + ", " + d.difficulty.toFixed(1) + " cents)")
+			.style("text-anchor", anchor)
+			.attr('dx', dxText);
+
+		this.focus.select('rect')
+			.style('x', dxBG)
 	}
 }.init(); };

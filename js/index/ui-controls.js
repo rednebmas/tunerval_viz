@@ -95,6 +95,15 @@ var UIInit = function () {
 
 $('#compare-btn').click(function () {
 	var newLoc = UpdateQueryString("filter", JSON.stringify(selection), window.location.origin + "/compare.html");
-	window.location = newLoc;
+	window.open(newLoc);
 })
 
+//
+// Color by dropdown
+//
+
+$(".dropdown-menu li a").click(function(){
+	$("#color-squares-by-btn-text").text($(this).text());
+	filters.colorBy = $(this).text();
+	updateViz();
+});

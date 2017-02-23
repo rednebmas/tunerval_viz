@@ -81,10 +81,10 @@
 			<div class="row">
 				<div class="col-md-12 col">
 
-					<label>Color squares by</label>
+					<label>Color squares by:</label>
 					<div class="dropdown">
 						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							Client ID
+							<span id="color-squares-by-btn-text">Client ID</span>
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -97,12 +97,20 @@
 				</div>
 			</div>
 
-			<div class="row">
+ 			<div class="row">
+				<div class="col-md-12 col" id="compare-button-col">
+					<label>Instructions</label>
+					<p>By default, each colored set of cells represents one user. The coloring can be changed to represent platform (iOS or Android), or the musical interval for which the questions was answered. The splits within the a color represent the number of questions they have answered different intervals. If you wish to see how their scores have progressed over time, click the cell to see their score progression.</p>
+					<p>Please see the <a href="http://sambender.com/tunerval/exploratory-data-analysis/writeup.html">Explatory Analysis</a> which led to the development of this visualization for a detailed description of the data set.</p>
+				</div>
+			</div>
+
+<!-- 			<div class="row">
 				<div class="col-md-12 col" id="compare-button-col">
 					<button type="button" id="compare-btn" class="btn btn-lg btn-success">View History</button>
 				</div>
 			</div>
-
+ -->
 			<!-- /close ui-controls -->
 		</div>
 	</div>
