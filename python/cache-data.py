@@ -9,7 +9,9 @@ import subprocess
 directory = "/Users/sam/s3/mobile-analytics-05-18-2016-b999adf56f104192a4ed120107b55dc9"
 
 # sync analytics before parsing
+print('hey')
 subprocess.call("aws s3 sync s3://mobile-analytics-05-18-2016-b999adf56f104192a4ed120107b55dc9 " + directory, shell=True)  
+print('hey2')
 
 print 's3 synced'
 

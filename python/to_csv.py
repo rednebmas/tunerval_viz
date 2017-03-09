@@ -44,8 +44,17 @@ for event_type in events.keys():
 	with open('csv/' + event_type + '_data.csv', 'w') as f:
 		f.write(','.join(keys) + '\n')
 		for event in events[event_type]:
-			comma_separated_values = ','.join([str(event[key]) if key in event else "NULL" for key in keys])
-			f.write(comma_separated_values + '\n')
+			values = []
+			for key in keys:
+				if key in event:
+					val = event[key]
+					if isinstance(val, unicode):
+						val = val.encode('ascii', 'ignore')
+					values.append(str(val))
+				else:
+					values.append("NULL")
+
+			f.write(','.join(values) + '\n')
 
 
 

@@ -148,6 +148,7 @@ var OrderLineChart = function() { return {
 			d1 = data[i];
 			var d = x0 - d0.order > d1.order - x0 ? d1 : d0;
 
+			console.log(d);
 			self.showFocusForDat(d);
 			timeLineChart.showFocusForDat(d);
 		}

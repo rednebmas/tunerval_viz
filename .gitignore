@@ -2,3 +2,7 @@
 *.csv
 *.pyc
 data.json
+*.docx
+*.sublime-project
+
+*.sublime-workspace

@@ -102,7 +102,7 @@ var updateViz = function () {
 				alert('In order to view score history you must be in "Breakdown by interval" mode.')
 				return;
 			}
-			
+
 			var currentSelection = [{
 				client_id: d.data['client_id'],
 				interval: d.data['name']
@@ -115,14 +115,13 @@ var updateViz = function () {
 			// var rectTopLeftOffsetY = 20;
 			d3.select(this).attr('fill-opacity', 1.0);
 
-			// console.log(d)
+			console.log(d)
 
 			// $('#popover785269').fadeIn();
 			$('#popover785269').css("display", "block");
 			$('#popover785269 .popover-content').html(d.value + " questions"
 				+ "<br>" + d.data.name
 				+ "<br>" + d.data['device>platform>name']
-				// + "<br>" + d.data['client_id']
 			);
 			$('#popover785269 .popover-title').text(d.data['client_id']);
 
@@ -191,6 +190,7 @@ var filtersChanged = function () {
 	{
 		var dataWasUndefined = typeof data == "undefined";
 		data = _data;
+		console.log(data);
 
 		if (dataWasUndefined) {
 			UIInit();

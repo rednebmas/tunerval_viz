@@ -8,8 +8,6 @@ def add_question_order_column(data):
         their_questions.append(row)
         user_questions[client_id] = their_questions
 
-    print [len(user_questions[key]) for key in user_questions.keys()]
-
     event_unique_id_to_number = {}
     for client_id in user_questions.keys():
         their_questions = user_questions[client_id]

@@ -156,7 +156,6 @@ var TimeLineChart = function() { return {
 		var dxText = 0;
 		var dxBG = 7;
 
-		console.log(xPos);
 		if (xPos + 180 > this.width) {
 			anchor = "end";
 			dxText = -19;

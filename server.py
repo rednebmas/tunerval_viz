@@ -63,7 +63,7 @@ async def test(request):
 
 		if request.args.get('breakdownByInterval') == 'true':
 			for key in row.keys():
-				if key == 'client>client_id' or key == 'total_questions_answered' or key == 'device>platform>name':
+				if 'desc ' not in key and 'asc ' not in key:
 					continue
 				elif row[key] > 0:
 					user_data['children'].append({ "name": key, "size": row[key] })
@@ -86,7 +86,7 @@ async def compare(request):
 	ret = []
 	for f in filter_arr:
 		f['interval'] = interval_name_converter[f['interval']]
-		filter_clause = "[client>client_id] = {client_id} AND [metrics>interval] = {interval}".format(**f)
+		filter_clause = "[client>client_id] = {client_id} AND [metrics>interval], [metrics>HalfStepsFromA4] = {interval}".format(**f)
 		cursor.execute("""
 			SELECT [metrics>Difficulty], [answer_order], [event_timestamp] FROM QuestionAnswers
 			WHERE [client>client_id] = ? AND [metrics>interval] = ?
@@ -95,7 +95,8 @@ async def compare(request):
 		rows = map(lambda r: {
 			'order' : r['answer_order'],
 			'difficulty' : r['metrics>Difficulty'],
-			'timestamp' : r['event_timestamp']
+			'timestamp' : r['event_timestamp'],
+			'halfStepsFromA4' : r['metrics>HalfStepsFromA4'] if 'metrics>HalfStepsFromA4' in r else -1000
 		}, cursor.fetchall())
 		ret.append(rows)
 
