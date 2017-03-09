@@ -94,8 +94,22 @@ var UIInit = function () {
 //
 
 $('#compare-btn').click(function () {
+	var clientIDs = "";
+	var intervals = "";
+	for (var i = selection.length - 1; i >= 0; i--) {
+		var select = selection[i];
+
+		if (clientIDs.length != 0) {
+			clientIDs += "&";
+			intervals += "&";
+		}
+
+		clientIDs += "client_ids[]=" + encodeURIComponent(select.client_id);
+		intervals += "intervals[]=" + encodeURIComponent(select.interval);
+	}
+
 	var newLoc = UpdateQueryString("filter", JSON.stringify(selection), window.location.origin + "/compare.html");
-	window.open(newLoc);
+	window.open(window.location.origin + "/compare.html?" + clientIDs + "&" + intervals);
 })
 
 //

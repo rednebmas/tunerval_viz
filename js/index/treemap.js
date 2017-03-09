@@ -76,46 +76,12 @@ var updateViz = function () {
 			}
 		})
 		.attr("fill-opacity", .9)
-		.on('click', function (d) {
-			/*
-			var fillColor = 'red';
-
-			var currentSelection = {
-				client_id: d.data['client_id'],
-				interval: d.data['name']
-			}
-
-			var cellIsSelected = d3.select(this).attr('fill') == 'red'
-			if (cellIsSelected) {
-				fillColor = filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id);
-				selection = selection.filter(function (selected) {
-					return selected.client_id != currentSelection.client_id &&
-						   selected.interval != currentSelection.interval;
-				})
-			} else {
-				selection.push(currentSelection);
-			}
-
-			d3.select(this).attr('fill', fillColor);
-			*/
-			if (filters.breakdownByInterval == false) {
-				alert('In order to view score history you must be in "Breakdown by interval" mode.')
-				return;
-			}
-
-			var currentSelection = [{
-				client_id: d.data['client_id'],
-				interval: d.data['name']
-			}];
-			var newLoc = UpdateQueryString("filter", JSON.stringify(currentSelection), window.location.origin + "/compare.html");
-			window.open(newLoc);
-		})
+		.attr("stroke-width", 0)
+		.on('click', onCellClick)
 		.on('mouseover', function (d) {
 			// var rectTopLeftOffsetX = 20;
 			// var rectTopLeftOffsetY = 20;
 			d3.select(this).attr('fill-opacity', 1.0);
-
-			console.log(d)
 
 			// $('#popover785269').fadeIn();
 			$('#popover785269').css("display", "block");
@@ -183,6 +149,65 @@ var updateViz = function () {
 	$("[data-toggle=popover]").popover();
 }
 
+var onCellClick = function (d) {
+	var fillColor = 'red';
+
+	var currentSelection = {
+		client_id: d.data['client_id'],
+		interval: d.data['name']
+	}
+
+	var cellIsSelected = d3.select(this).attr('stroke-width') > 0;
+	if (cellIsSelected) {
+		selection = selection.filter(function (selected) {
+			return selected.client_id != currentSelection.client_id &&
+				   selected.interval != currentSelection.interval;
+		});
+
+		makeCellRegular(this);
+	} else {
+		selection.push(currentSelection);
+		makeCellSmall(this);
+	}
+
+	// d3.select(this).attr('fill', fillColor);
+	/*
+			if (filters.breakdownByInterval == false) {
+				alert('In order to view score history you must be in "Breakdown by interval" mode.')
+				return;
+			}
+
+			var currentSelection = [{
+				client_id: d.data['client_id'],
+				interval: d.data['name']
+			}];
+			var newLoc = UpdateQueryString("filter", JSON.stringify(currentSelection), window.location.origin + "/compare.html");
+			window.open(newLoc);
+	*/
+}
+
+var makeCellSmall = function (cell) {
+	var dx = 2;
+	var dy = 2;
+	d3.select(cell).transition()
+		.attr("transform", function(d) { return "translate(" + (d.x0 + dx) + "," + (d.y0 + dy) + ")"; })
+		.attr("id", function(d) { return d.data.id; })
+		.attr("width", function(d) { return d.x1 - d.x0 - 2*dx; })
+		.attr("height", function(d) { return d.y1 - d.y0 - 2*dy; })
+		.attr("stroke", "white")
+		.attr("stroke-width", 1)
+		.attr("stroke-opacity", .9)
+}
+
+var makeCellRegular = function (cell) {
+	d3.select(cell).transition()
+		.attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; })
+		.attr("id", function(d) { return d.data.id; })
+		.attr("width", function(d) { return d.x1 - d.x0; })
+		.attr("height", function(d) { return d.y1 - d.y0; })
+		.attr("stroke-width", 0)
+}
+
 var filtersChanged = function () {
 	console.log('filtersChanged called');
 	$('#loading-gif').css('display', 'initial');
@@ -197,6 +222,7 @@ var filtersChanged = function () {
 		}
 		updateUIForNewData();
 		updateViz(data);
+		selection = [];
 
 		$('#loading-gif').css('display', 'none');
 	})

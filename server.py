@@ -79,7 +79,14 @@ async def test(request):
 
 @app.route("/compare")
 async def compare(request):
-	filter_arr = json_loads(request.args.get('filter'))
+	client_ids = request.args.getlist('client_ids[]')
+	intervals = request.args.getlist('intervals[]')
+	filter_arr = []
+	for i in range(len(client_ids)):
+		filter_arr.append({
+			'client_id': client_ids[i],
+			'interval': intervals[i],
+		})
 
 	# fill with arrays of points
 	# e.g. final ret would be [[{time: 1, order: 1, difficulty: 98.7}, ... more points], [ ... second line ... ]]
