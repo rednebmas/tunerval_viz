@@ -91,19 +91,19 @@ var TimeLineChart = function() { return {
 		this.xScale.domain([new Date(minTime), new Date(maxTime)])
 		this.timeSvg.select('.x.axis').call(this.xAxis)
 
-		this.timeSvg.append("path")
-			.datum(data)
-			.attr("fill", "none")
-			.attr("stroke", "white")
-			.attr("stroke-linejoin", "round")
-			.attr("stroke-width", 1.0)
-			.attr("d", this.line_0)
-			.transition().duration(1000)
-			.attr("d", this.line)
+		var self = this;
+		this.timeSvg.selectAll(".dot")
+			.data(data)
+			.enter().append("circle")
+				.attr("class", "dot")
+				.attr("r", 3.5)
+				.attr("cx", function(d) { return self.xScale(d.timestamp); })
+				.attr("cy", function(d) { return self.yScale(d.difficulty); })
+				.style("fill", function(d) { return 'white'; })
+				.style("fill-opacity", .33);
 
 		this.setupFocusDot();
 
-		var self = this;
 		this.timeSvg.append("rect")
 			.attr("class", "overlay")
 			.attr("width", this.width)
@@ -139,14 +139,29 @@ var TimeLineChart = function() { return {
 	},
 
 	onMouseMove: function (self) {
+		// This searches through all points and finds the closest
+		// Fairly computationally intensive, but so far does not appear to be a problem.
 		return function () {
-			var x0 = self.xScale.invert(d3.mouse(this)[0]),
-			i = Math.min(self.bisectOrder(data, x0, 1), data.length - 1), 
-			d0 = data[i - 1],
-			d1 = data[i];
-			var d = x0 - d0.timestamp > d1.timestamp - x0 ? d1 : d0;
-			self.showFocusForDat(d);
-			orderLineChart.showFocusForDat(d);
+			var mouseX = d3.mouse(this)[0];
+			var mouseY = d3.mouse(this)[1];
+
+			var closestDat = data[0];
+			var closestDistance = 9007199254740991;
+			for (var i = data.length - 1; i >= 0; i--) {
+				var timestampX = self.xScale(data[i].timestamp);
+				var difficultyY = self.yScale(data[i].difficulty);
+
+				var dx = mouseX - timestampX;
+				var dy = mouseY - difficultyY;
+				var distance = Math.sqrt(dx ** 2 + dy ** 2);
+				if (distance < closestDistance) {
+					closestDistance = distance;
+					closestDat = data[i];
+				}
+			}
+			self.showFocusForDat(closestDat);
+			orderLineChart.showFocusForDat(closestDat);
+			return;
 		}
 	},
 
