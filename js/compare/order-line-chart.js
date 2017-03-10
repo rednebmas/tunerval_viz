@@ -150,14 +150,16 @@ var OrderLineChart = function() { return {
 
 	onMouseMove: function (self) {
 		return function () {
-			var x0 = self.xScale.invert(d3.mouse(this)[0]),
-			i = Math.min(self.bisectOrder(data, x0, 1), data.length - 1), 
-			d0 = data[i - 1],
-			d1 = data[i];
-			var d = x0 - d0.order > d1.order - x0 ? d1 : d0;
+			var closestDat = findClosestDat(
+				d3.mouse(this), 
+				'order', 
+				'difficulty', 
+				self.xScale, 
+				self.yScale
+			);
 
-			self.showFocusForDat(d);
-			timeLineChart.showFocusForDat(d);
+			self.showFocusForDat(closestDat);
+			timeLineChart.showFocusForDat(closestDat);
 		}
 	},
 

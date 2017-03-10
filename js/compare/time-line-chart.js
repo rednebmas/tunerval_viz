@@ -151,27 +151,13 @@ var TimeLineChart = function() { return {
 		// This searches through all points and finds the closest.
 		// Fairly computationally intensive, but so far does not appear to be a problem.
 		return function () {
-			var mouseX = d3.mouse(this)[0];
-			var mouseY = d3.mouse(this)[1];
-
-			var closestDat = data[0][0];
-			var closestDistance = 9007199254740991;
-
-			for (var k = data.length - 1; k >= 0; k--) {
-				var subDataSet = data[k];
-				for (var i = subDataSet.length - 1; i >= 0; i--) {
-					var timestampX = self.xScale(subDataSet[i].timestamp);
-					var difficultyY = self.yScale(subDataSet[i].difficulty);
-
-					var dx = mouseX - timestampX;
-					var dy = mouseY - difficultyY;
-					var distance = Math.sqrt(dx ** 2 + dy ** 2);
-					if (distance < closestDistance) {
-						closestDistance = distance;
-						closestDat = subDataSet[i];
-					}
-				}
-			}
+			var closestDat = findClosestDat(
+				d3.mouse(this), 
+				'timestamp', 
+				'difficulty', 
+				self.xScale, 
+				self.yScale
+			);
 
 			self.showFocusForDat(closestDat);
 			orderLineChart.showFocusForDat(closestDat);
