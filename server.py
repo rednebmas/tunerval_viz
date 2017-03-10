@@ -66,7 +66,11 @@ async def test(request):
 				if 'desc ' not in key and 'asc ' not in key:
 					continue
 				elif row[key] > 0:
-					user_data['children'].append({ "name": key, "size": row[key] })
+					user_data['children'].append({ 
+						"name": key, 
+						"size": row[key],
+						"interval_value": interval_name_converter[key]
+					})
 		else:
 			user_data['size'] = row['total_questions_answered']
 

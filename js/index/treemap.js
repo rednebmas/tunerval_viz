@@ -21,7 +21,8 @@ var svg = d3.select("svg"),
 
 var fader = function(color) { return d3.interpolateRgb(color, "#fff")(0.2); },
 	color = d3.scaleOrdinal(d3.schemeCategory20.map(fader)),
-	format = d3.format(",d");
+	format = d3.format(",d"),
+	divergingColorScale = d3.scaleSequential(d3.interpolatePiYG);
 
 var treemap = d3.treemap()
 	.tile(d3.treemapResquarify)
@@ -44,7 +45,6 @@ var updateViz = function () {
 		.eachBefore(function(d) { 
 			d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name; 
 			if (!('device>platform>name' in d['data']) && d.depth != 0) {
-				// console.log(d);
 				d['data']['device>platform>name'] = d.parent['data']['device>platform>name'];
 				d['data']['client_id'] = d.parent['data']['name'];
 			} 
@@ -70,8 +70,13 @@ var updateViz = function () {
 			if (filters.colorBy == 'Client ID') {
 				return filters.breakdownByInterval ? color(d.parent.data.id) : color(d.data.id); 
 			} else if (filters.colorBy == 'Interval') {
-				return color(d.data.name); 
+				return d3.interpolatePRGn((+d.data.interval_value + 12) / 24); 
 			} else if (filters.colorBy == 'Platform') {
+				if (d.data['device>platform>name'] == 'iOS') {
+					return 'rgb(80, 122, 165)';
+				} else {
+					return 'rgb(92, 160, 83)';
+				}
 				return color(d.data['device>platform>name']);
 			}
 		})

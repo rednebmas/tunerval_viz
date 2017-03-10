@@ -1,1 +1,1 @@
-subDataSetColors = ["white", "green", "#2052DB", "purple", "orange"];
+subDataSetColors = ["white", "green", "#2052DB", "purple", "orange", "pink", "red", "yellow"];
