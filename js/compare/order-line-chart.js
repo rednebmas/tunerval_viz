@@ -81,26 +81,34 @@ var OrderLineChart = function() { return {
 	},
 
 	update: function() {
-		var min = d3.min(data, function (d) {
-			return d.order;
+		var min = d3.min(data, function (userIntervalData) {
+			return d3.min(userIntervalData, function (d) {
+				return d.order;
+			});
 		});
-		var max = d3.max(data, function (d) {
-			return d.order;
+		var max = d3.max(data, function (userIntervalData) {
+			return d3.max(userIntervalData, function (d) {
+				return d.order;
+			})
 		});
 
 		this.xScale.domain([min, max])
 		this.orderSvg.select('.x.axis').call(this.orderXAxis)
 
-		this.orderSvg.append("path")
-			.datum(data)
-			.attr("fill", "none")
-			.attr("stroke", "white")
-			.attr("stroke-linejoin", "round")
-			// .attr("stroke-linecap", "round")
-			.attr("stroke-width", 1.0)
-			.attr("d", this.line_0)
-			.transition().duration(1000)
-			.attr("d", this.line)
+		for (var i = data.length - 1; i >= 0; i--) {
+			var subDataSet = data[i];
+
+			this.orderSvg.append("path")
+				.datum(subDataSet)
+				.attr("fill", "none")
+				.attr("stroke", subDataSetColors[i])
+				.attr("stroke-opacity", .85)
+				.attr("stroke-linejoin", "round")
+				.attr("stroke-width", 1.0)
+				.attr("d", this.line_0)
+				.transition().duration(1000)
+				.attr("d", this.line)
+		}	
 
 		this.setupFocusDot();
 

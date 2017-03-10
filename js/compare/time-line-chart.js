@@ -81,26 +81,35 @@ var TimeLineChart = function() { return {
 	},
 
 	update: function() {
-		var minTime = d3.min(data, function (d) {
-			return d.timestamp;
+		var minTime = d3.min(data, function (userIntervalData) {
+			return d3.min(userIntervalData, function (d) {
+				return d.timestamp;
+			});
 		});
-		var maxTime = d3.max(data, function (d) {
-			return d.timestamp;
+		var maxTime = d3.max(data, function (userIntervalData) {
+			return d3.max(userIntervalData, function (d) {
+				return d.timestamp;
+			});
 		});
 
 		this.xScale.domain([new Date(minTime), new Date(maxTime)])
 		this.timeSvg.select('.x.axis').call(this.xAxis)
 
 		var self = this;
-		this.timeSvg.selectAll(".dot")
-			.data(data)
-			.enter().append("circle")
-				.attr("class", "dot")
-				.attr("r", 3.5)
-				.attr("cx", function(d) { return self.xScale(d.timestamp); })
-				.attr("cy", function(d) { return self.yScale(d.difficulty); })
-				.style("fill", function(d) { return 'white'; })
-				.style("fill-opacity", .33);
+
+		for (var i = data.length - 1; i >= 0; i--) {
+			var subDataSet = data[i];
+
+			this.timeSvg.selectAll(".dot-dset" + i)
+				.data(subDataSet)
+				.enter().append("circle")
+					.attr("class", "dot")
+					.attr("r", 3.5)
+					.attr("cx", function(d) { return self.xScale(d.timestamp); })
+					.attr("cy", function(d) { return self.yScale(d.difficulty); })
+					.style("fill", subDataSetColors[i])
+					.style("fill-opacity", .33);
+		}
 
 		this.setupFocusDot();
 
@@ -139,29 +148,33 @@ var TimeLineChart = function() { return {
 	},
 
 	onMouseMove: function (self) {
-		// This searches through all points and finds the closest
+		// This searches through all points and finds the closest.
 		// Fairly computationally intensive, but so far does not appear to be a problem.
 		return function () {
 			var mouseX = d3.mouse(this)[0];
 			var mouseY = d3.mouse(this)[1];
 
-			var closestDat = data[0];
+			var closestDat = data[0][0];
 			var closestDistance = 9007199254740991;
-			for (var i = data.length - 1; i >= 0; i--) {
-				var timestampX = self.xScale(data[i].timestamp);
-				var difficultyY = self.yScale(data[i].difficulty);
 
-				var dx = mouseX - timestampX;
-				var dy = mouseY - difficultyY;
-				var distance = Math.sqrt(dx ** 2 + dy ** 2);
-				if (distance < closestDistance) {
-					closestDistance = distance;
-					closestDat = data[i];
+			for (var k = data.length - 1; k >= 0; k--) {
+				var subDataSet = data[k];
+				for (var i = subDataSet.length - 1; i >= 0; i--) {
+					var timestampX = self.xScale(subDataSet[i].timestamp);
+					var difficultyY = self.yScale(subDataSet[i].difficulty);
+
+					var dx = mouseX - timestampX;
+					var dy = mouseY - difficultyY;
+					var distance = Math.sqrt(dx ** 2 + dy ** 2);
+					if (distance < closestDistance) {
+						closestDistance = distance;
+						closestDat = subDataSet[i];
+					}
 				}
 			}
+
 			self.showFocusForDat(closestDat);
 			orderLineChart.showFocusForDat(closestDat);
-			return;
 		}
 	},
 
