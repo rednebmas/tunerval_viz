@@ -108,7 +108,6 @@ $('#compare-btn').click(function () {
 		intervals += "intervals[]=" + encodeURIComponent(select.interval);
 	}
 
-	var newLoc = UpdateQueryString("filter", JSON.stringify(selection), window.location.origin + "/compare.html");
 	window.open(window.location.origin + "/compare.html?" + clientIDs + "&" + intervals);
 })
 

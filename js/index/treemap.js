@@ -165,8 +165,8 @@ var onCellClick = function (d) {
 	var cellIsSelected = d3.select(this).attr('stroke-width') > 0;
 	if (cellIsSelected) {
 		selection = selection.filter(function (selected) {
-			return selected.client_id != currentSelection.client_id &&
-				   selected.interval != currentSelection.interval;
+			return !(selected.client_id == currentSelection.client_id &&
+				   selected.interval == currentSelection.interval);
 		});
 
 		makeCellRegular(this);
